@@ -3,6 +3,8 @@ package com.wkdrabbit.space_x.ui.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import com.wkdrabbit.space_x.R
@@ -17,12 +19,18 @@ import java.text.SimpleDateFormat
 
 
 
-class LaunchAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+
+
+class LaunchAdapter(var clickListener: OnLaunchClickListener): RecyclerView.Adapter<LaunchAdapter.LaunchViewHolder>(){
 
     var itemList: List<Launch> = listOf(Launch(0, "", Rocket(""), LaunchSite(""), 0, Images("")))
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return TransactionViewHolder(
+
+    private var listener: AdapterView.OnItemClickListener? = null
+
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LaunchViewHolder {
+        return LaunchViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.launch_list_item, parent, false)
         )
     }
@@ -32,36 +40,34 @@ class LaunchAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
         this.notifyDataSetChanged()
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when(holder){
-            is TransactionViewHolder -> {holder.bind(itemList[position])}
-        }
+    override fun onBindViewHolder(holder: LaunchViewHolder, position: Int) {
+        holder.initalize(itemList[position], clickListener)
     }
 
     override fun getItemCount(): Int {
         return itemList.size
     }
 
-    class TransactionViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+    class LaunchViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+        fun initalize(item: Launch, action: OnLaunchClickListener){
+            itemView.setOnClickListener{action.onLaunchClick(item, adapterPosition)}
 
-        var launchDate = itemView.tv_launch_date
-        var missionName = itemView.tv_mission_name
-        var rocketName = itemView.tv_rocket_name
-        var launchSite = itemView.tv_site_name
-        var patchImage = itemView.iv_launch
-
-        fun bind(launch:Launch){
-            val date = Date(launch.launchDate * 1000L)
+            val date = Date(item.launchDate * 1000L)
             val format = SimpleDateFormat("dd/MM/yyyy", Locale.US)
             format.setTimeZone(TimeZone.getTimeZone("Etc/UTC"))
             val formattedDate = format.format(date)
-            launchDate.text  = "Date \n ${formattedDate}"
-            missionName.text = "Mission \n${launch.missionName}"
-            rocketName.text  = "Rocket \n${launch.rocket.name}"
-            launchSite.text  = "Site \n${launch.launchSite.name}"
-            if (launch.images.imageUrl != ""){
-                Picasso.get().load(launch.images.imageUrl).into(patchImage)
+            itemView.tv_launch_date.text  = "Date \n${formattedDate}"
+            itemView.tv_mission_name.text = "Mission \n${item.missionName}"
+            itemView.tv_rocket_name.text  = "Rocket \n${item.rocket.name}"
+            itemView.tv_site_name.text  = "Site \n${item.launchSite.name}"
+            if (item.images.imageUrl != ""){
+                Picasso.get().load(item.images.imageUrl).into(itemView.iv_launch)
             }
         }
+
+    }
+
+    interface OnLaunchClickListener {
+        fun onLaunchClick(item: Launch,position: Int)
     }
 }
