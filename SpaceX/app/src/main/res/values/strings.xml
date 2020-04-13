@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Space X</string>
+    <string name="launch_patch_image">Launch Patch Image</string>
 </resources>

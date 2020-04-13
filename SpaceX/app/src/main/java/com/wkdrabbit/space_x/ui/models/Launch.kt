@@ -3,12 +3,12 @@ package com.wkdrabbit.space_x.ui.models
 import com.google.gson.annotations.SerializedName
 
 data class Launch(
-    @SerializedName("flight_number") val flightNumber: Long,
-    @SerializedName("mission_name") val missionName: String,
-    @SerializedName("rocket") val rocket: Rocket,
-    @SerializedName("launch_site") val launchSite: LaunchSite,
+    @SerializedName("flight_number")    val flightNumber: Long,
+    @SerializedName("mission_name")     val missionName: String,
+    @SerializedName("rocket")           val rocket: Rocket,
+    @SerializedName("launch_site")      val launchSite: LaunchSite,
     @SerializedName("launch_date_unix") val launchDate: Long,
-    @SerializedName("links") val patchImageUrl: Images
+    @SerializedName("links")            val images: Images
 )
 
 data class Rocket(
