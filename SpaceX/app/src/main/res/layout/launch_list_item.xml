@@ -11,7 +11,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:padding="8dp">
 
         <ImageView
@@ -26,57 +26,38 @@
 
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            app:layout_constraintLeft_toRightOf="@id/iv_launch">
-
-            <TextView
-                android:id="@+id/tv_mission_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="Mission Name"
-                app:layout_constraintBottom_toTopOf="@id/tv_rocket_name"
-                app:layout_constraintLeft_toRightOf="@id/iv_launch"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tv_rocket_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="Rocket Name"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/iv_launch"
-                app:layout_constraintTop_toBottomOf="@id/tv_mission_name" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            app:layout_constraintLeft_toRightOf="@id/iv_launch"
             app:layout_constraintRight_toRightOf="parent">
 
             <TextView
-                android:id="@+id/tv_site_name"
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_mission_name"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:text="Site Name"
-                app:layout_constraintBottom_toTopOf="@id/tv_launch_date"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_marginStart="8dp"
+                android:text="Mission Name"/>
+
+            <TextView
+                android:id="@+id/tv_rocket_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="Rocket Name"/>
+
+            <TextView
+                android:id="@+id/tv_site_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="Site Name"/>
 
             <TextView
                 android:id="@+id/tv_launch_date"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:text="02/23/2332"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_site_name" />
+                android:layout_marginStart="8dp"
+                android:text="02/23/2332"/>
 
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

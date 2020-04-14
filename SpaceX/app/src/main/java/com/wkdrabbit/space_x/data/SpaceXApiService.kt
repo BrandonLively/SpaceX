@@ -1,26 +1,29 @@
 package com.wkdrabbit.space_x.data
 
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.wkdrabbit.space_x.ui.models.Launch
-import io.reactivex.Observable
+import kotlinx.coroutines.Deferred
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 
 interface SpaceXApiService{
 
     @GET("launches/")
-    fun getLaunches(): Observable<List<Launch>>
+    fun getLaunchesAsync(): Deferred<List<Launch>>
 
-    companion object Factory{
-        fun create(): SpaceXApiService{
-            val retrofit = Retrofit.Builder()
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl("https://api.spacexdata.com/v3/")
+    companion object{
+        operator fun invoke(): SpaceXApiService{
+            val okHttpClient = OkHttpClient.Builder()
                 .build()
-
-            return retrofit.create(SpaceXApiService::class.java)
+            return Retrofit.Builder()
+                .client(okHttpClient)
+                .baseUrl("https://api.spacexdata.com/v3/")
+                .addCallAdapterFactory(CoroutineCallAdapterFactory())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+                .create(SpaceXApiService::class.java)
         }
     }
 }
