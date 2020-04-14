@@ -9,16 +9,20 @@ import com.wkdrabbit.space_x.ui.models.Launch
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), LaunchAdapter.OnLaunchClickListener{
+    private lateinit var launchListFragment: LaunchListFragment
+    private lateinit var launchDetailsFragment: LaunchDetailsFragment
+    private var twoPane: Boolean = false
 
-    //Call back to handle the different onClick logic based on which layout is being used.
+
+    //Sets up onClick callback functionality depending on which layout is being used
     override fun onLaunchClick(item: Launch, position: Int) {
+        launchListFragment.launchAdapter.currentSelection = item.flightNumber
+        launchListFragment.launchViewModel.currentLaunch.value = item
         if(twoPane){
-            launchListFragment.launchViewModel.currentLaunch.postValue(item)
-            launchListFragment.launchAdapter.currentSelection = item.flightNumber
             launchListFragment.launchAdapter.notifyDataSetChanged()
         }
         else{
-            launchListFragment.launchViewModel.currentLaunch.postValue(item)
+            launchListFragment.launchViewModel.currentLaunch.value = item
             supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.list_container, LaunchDetailsFragment())
@@ -28,9 +32,9 @@ class MainActivity : AppCompatActivity(), LaunchAdapter.OnLaunchClickListener{
         }
     }
 
-    lateinit var launchListFragment: LaunchListFragment
-    lateinit var launchDetailsFragment: LaunchDetailsFragment
-    private var twoPane: Boolean = false
+    fun setActionBarTitle(title: String) {
+        supportActionBar!!.title = title
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,8 +50,8 @@ class MainActivity : AppCompatActivity(), LaunchAdapter.OnLaunchClickListener{
         }
 
         //Sets up fragments based on which layout is being used
+        launchListFragment = LaunchListFragment()
         if (twoPane) {
-            launchListFragment = LaunchListFragment.newInstance(this)
             launchDetailsFragment = LaunchDetailsFragment()
             supportFragmentManager
                 .beginTransaction()
@@ -57,7 +61,6 @@ class MainActivity : AppCompatActivity(), LaunchAdapter.OnLaunchClickListener{
                 .commit()
         }
         else{
-            launchListFragment = LaunchListFragment.newInstance(this)
             supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.list_container, launchListFragment)
